@@ -1,6 +1,7 @@
 package jinivus.BossAssist;
 
 import java.io.IOException;
+import java.sql.Connection;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,6 +10,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.floyd.bukkit.petition.PetitionPlugin;
 import com.sk89q.worldedit.BlockVector;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldedit.bukkit.selections.CuboidSelection;
@@ -30,6 +32,8 @@ public class BACommand implements CommandExecutor
 	{
 		WorldGuardPlugin wg = plugin.getWorldGuard();
 		WorldEditPlugin we = plugin.getWorldEdit();
+		PetitionPlugin pe = plugin.getPetition();
+		Connection dbh = null;
 		//Make sure the command is being executed by a player, not console
 		if (!(sender instanceof Player)) 
 		{
@@ -96,6 +100,10 @@ public class BACommand implements CommandExecutor
 				try {
 					mgr.save();
 					sender.sendMessage(ChatColor.YELLOW + "Region saved as " + id + ".");
+					String[] herp = ("create Review region "+id).split(" ");
+					if (pe.dbpool != null) { dbh = pe.dbpool.getConnection(); }
+					pe.performOpen(player, herp, dbh);
+					if (pe.dbpool != null) { pe.dbpool.releaseConnection(dbh); }
 					return true;
 				} catch (IOException e) {
 					throw new CommandException("Failed to write regions file: "
@@ -106,7 +114,7 @@ public class BACommand implements CommandExecutor
 
 		}	
 		//wg.getGlobalRegionManager().get(player.getWorld());
-		return true;
+		return false;
 
 	}
 }

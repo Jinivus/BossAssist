@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.floyd.bukkit.petition.PetitionPlugin;
 import com.nijiko.permissions.PermissionHandler;
 import com.nijikokun.bukkit.Permissions.Permissions;
 
@@ -49,6 +50,16 @@ public class BossAssist extends JavaPlugin
 		}
 		
 		return (WorldEditPlugin) we;
+	}
+	
+	public PetitionPlugin getPetition()
+	{
+		Plugin pe = getServer().getPluginManager().getPlugin("PetitionPlugin");
+		if (pe == null || !(pe instanceof PetitionPlugin)) 
+		{
+			return null; // Maybe you want throw an exception instead
+		}
+		return (PetitionPlugin) pe;
 	}
 	
 	private void setupPermissions() {
