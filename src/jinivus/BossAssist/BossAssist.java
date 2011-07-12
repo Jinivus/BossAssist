@@ -5,10 +5,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 
 public class BossAssist extends JavaPlugin
 {
-
+	public static PermissionHandler permissionHandler;
+	
 	@Override
 	public void onDisable() {
 		System.out.println("Disabling BossAssist");
@@ -17,6 +20,7 @@ public class BossAssist extends JavaPlugin
 
 	@Override
 	public void onEnable() {
+		setupPermissions();
 		getCommand("ba").setExecutor(new BACommand(this));
 		System.out.println("Enabled BossAssist");
 
@@ -45,6 +49,22 @@ public class BossAssist extends JavaPlugin
 		}
 		
 		return (WorldEditPlugin) we;
+	}
+	
+	private void setupPermissions() {
+	    if (permissionHandler != null) {
+	        return;
+	    }
+	    
+	    Plugin permissionsPlugin = this.getServer().getPluginManager().getPlugin("Permissions");
+	    
+	    if (permissionsPlugin == null) {
+	        //log("Permission system not detected, defaulting to OP");
+	        return;
+	    }
+	    
+	    permissionHandler = ((Permissions) permissionsPlugin).getHandler();
+	    //log("Found and will use plugin "+((Permissions)permissionsPlugin).getDescription().getFullName());
 	}
 
 }

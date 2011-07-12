@@ -37,6 +37,11 @@ public class BACommand implements CommandExecutor
 			return false;
 		}
 		Player player = (Player) sender;
+		if(!plugin.permissionHandler.has(player, "bossassist.define"))
+		{
+			player.sendMessage(ChatColor.RED + "You do not have permission to do that.");
+			return true;
+		}
 		//if they just used /ba, we want it to tell them the arguments
 		if(split.length == 0)
 		{
@@ -101,7 +106,7 @@ public class BACommand implements CommandExecutor
 
 		}	
 		//wg.getGlobalRegionManager().get(player.getWorld());
-		return false;
+		return true;
 
 	}
 }
