@@ -1,0 +1,7 @@
+name: BossAssist
+main: jinivus.BossAssist.BossAssist
+version: 0.5
+commands:
+  ba:
+    description: Boss Assist.
+    usage: /ba (player) (description)
